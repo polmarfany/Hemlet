@@ -1,18 +1,16 @@
 package com.company;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
 public class Game extends JPanel {
-
     public ArrayList<Items> itemsArrayList = new ArrayList<>();
     public static final int DIMENSIONS = 700;
     public static int points = 0;
+    public static String pointer;
     public static int lifes = 3; //TODO nose si es millor posarho aqui o com a propietat de Mr, depen de que usi mes resources
     private Mr mr = new Mr(this);
 
@@ -35,7 +33,7 @@ public class Game extends JPanel {
     public void augmentPoints() {
         points = points + 5;
         if (points % 20 == 0) {
-
+            ItemsCreator.decreaseHoldTime();
         }
     }
 
@@ -52,9 +50,11 @@ public class Game extends JPanel {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        mr.paint(g2d);
 
-        for (Items item : itemsArrayList) {
+        g.drawString(String.valueOf(points), 200, 20);
+        mr.paint(g2d); //pintem el MR
+
+        for (Items item : itemsArrayList) { //pintem els ITEMS
             item.paint(g2d);
         }
     }
@@ -62,12 +62,17 @@ public class Game extends JPanel {
     public static void main(String[] args) throws InterruptedException {
         Game game = new Game();
         JFrame frame = new JFrame("Mini Polla");
+        JLabel background = new JLabel(new ImageIcon(Icon.getIcon("icon/fondo.jpg")));
+        frame.setContentPane(background);
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         frame.add(game);
         frame.setSize(DIMENSIONS, DIMENSIONS );
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        new Thread(new ItemsCreator(game) ).start();
+        new Thread(new ItemsCreator(game) ).start(); //creador items
 
         while (lifes > 0) {
             game.repaint();

@@ -9,7 +9,6 @@ public class Hammer extends ItemsBad {
         super(game, hammerPath, positionX, lifeMinus);
     }
 
-
     @Override
     public void effect() {
         super.effect();

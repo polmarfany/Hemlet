@@ -6,8 +6,7 @@ import java.util.Collections;
 
 public class ItemsCreator implements Runnable {
 
-    public static final int HOLD_TIME = 1000 ; //milliseconds, TIME BETWEEN ITEM CREATED
-    public static int DIFICULTAT = 1;
+    private static int HOLD_TIME = 1000 ; //milliseconds, TIME BETWEEN ITEM CREATED
     public boolean gameRunning = true;
     public static Game game;
     private static ArrayList<Integer> columnArrayList = new ArrayList<>(Arrays.asList(100, 200, 300, 400, 500)); //valors de diferents columnes, de moment hardcodejats
@@ -30,7 +29,7 @@ public class ItemsCreator implements Runnable {
     public static void creator() {
         Collections.shuffle(columnArrayList); //d'aquesta manera, randomitzem on sortiran els items I (sobretot, important) no es poden repetir
 
-        for (int index = 0; index < (Math.random() < 0.9 ? 1 : 2 ); index++) { //index = numero d'items que crearem per a cada tongada, de tant en quant en crearom 2 alhora
+        for (int index = 0; index < (Math.random() < 0.8 ? 1 : 2 ); index++) { //index = numero d'items que crearem per a cada tongada, de tant en quant en crearom 2 alhora
             Items nouItem = Math.random() < 0.95 ? createBadItem(columnArrayList.get(index)) : createGoodItem(columnArrayList.get(index)); //95% dels items sera BAD, el 5% sera GOOD
             game.itemsArrayList.add(nouItem);
             new Thread(nouItem).start();
@@ -44,5 +43,8 @@ public class ItemsCreator implements Runnable {
 
     private static ItemsGood createGoodItem(int X) {
         return (Math.random() < 0.8) ? new Shield(game, X) : new FirstAid(game, X); //80% dels GOOD ITEMS seran SHIELD, 20% FIRSTAID
+    }
+    public static void decreaseHoldTime() {
+        HOLD_TIME = HOLD_TIME - 50;
     }
 }
