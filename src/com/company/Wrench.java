@@ -7,11 +7,12 @@ public class Wrench extends ItemsBad {
 
     public Wrench(Game game, int positionX){
         super(game, wrenchPath, positionX, lifeMinus);
-    };
+    }
 
 
     @Override
     public void effect() {
-
+        super.effect();
+        getMr().wrenchEffect();
     }
 }

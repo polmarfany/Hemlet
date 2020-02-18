@@ -6,14 +6,14 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import javax.swing.*;
 
 public class Game extends JPanel {
 
     public ArrayList<Items> itemsArrayList = new ArrayList<>();
     public static final int DIMENSIONS = 700;
+    public static int points = 0;
+    public static int lifes = 3; //TODO nose si es millor posarho aqui o com a propietat de Mr, depen de que usi mes resources
     private Mr mr = new Mr(this);
 
     public Game() {
@@ -22,11 +22,29 @@ public class Game extends JPanel {
             public void keyTyped(KeyEvent e) {}
             @Override
             public void keyPressed(KeyEvent e) {}
-
             @Override
             public void keyReleased(KeyEvent e) {mr.keyReleased(e);}
         });
         setFocusable(true);
+    }
+
+    public Mr getMr() { //per a poder handlejar els efectes dels items directament des de les seves classes
+        return mr;
+    }
+
+    public void augmentPoints() {
+        points = points + 5;
+        if (points % 20 == 0) {
+
+        }
+    }
+
+    public void incrementLifes() {
+        lifes = lifes + 1;
+    }
+
+    public void destroyItem(Items item) {
+        itemsArrayList.remove(item);
     }
 
     @Override
@@ -41,19 +59,6 @@ public class Game extends JPanel {
         }
     }
 
-    public void gameOver() {
-        JOptionPane.showMessageDialog(this, "Game Over", "Game Over", JOptionPane.YES_NO_OPTION);
-        System.exit(ABORT);
-    }
-
-    public Mr getMr() { //per a poder handlejar els efectes dels items directament des de les seves classes
-        return mr;
-    }
-
-    public void destroyItem(Items item) {
-        itemsArrayList.remove(item);
-    }
-
     public static void main(String[] args) throws InterruptedException {
         Game game = new Game();
         JFrame frame = new JFrame("Mini Polla");
@@ -64,9 +69,15 @@ public class Game extends JPanel {
 
         new Thread(new ItemsCreator(game) ).start();
 
-        while (true) {
+        while (lifes > 0) {
             game.repaint();
-            Thread.sleep(10);
+            Thread.sleep(50);
         }
+        game.gameOver();
+    }
+
+    public void gameOver() {
+        JOptionPane.showMessageDialog(this, "Game Over", "Game Over", JOptionPane.YES_NO_OPTION);
+        System.exit(ABORT);
     }
 }

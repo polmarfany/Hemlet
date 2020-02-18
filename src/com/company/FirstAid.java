@@ -10,6 +10,6 @@ public class FirstAid extends ItemsGood {
 
     @Override
     public void effect() {
-
+        game.incrementLifes();
     }
 }

@@ -7,4 +7,9 @@ public abstract class ItemsBad extends Items {
         super(game, iconPath, positionX);
         this.lifeMinus = lifeMinus;
     }
+
+
+    public void effect() {
+        game.lifes = game.lifes - this.lifeMinus;
+    }
 }

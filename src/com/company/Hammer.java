@@ -7,10 +7,13 @@ public class Hammer extends ItemsBad {
 
     public Hammer(Game game, int positionX){
         super(game, hammerPath, positionX, lifeMinus);
-    };
+    }
+
 
     @Override
     public void effect() {
-
+        super.effect();
+        getMr().mrStart(); //also effect of Hammer
+        //TODO mostrar vides i comprobar que funcioona
     }
 }

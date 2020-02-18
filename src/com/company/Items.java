@@ -6,16 +6,16 @@ import java.awt.image.BufferedImage;
 public abstract class Items implements Runnable {
 
     //game boundaries handling
-    public static int FLOOR_Y = 600; //quan xoca amb el terra/mr
-    public static int SECTOR = 100; //quan es recorre (taula de 5x5, 500px/500px)
+    private static final int FLOOR_Y = 500; //floor, maximum reach of painting method
+    private static final int SECTOR = 100; //travel movement (table 5x5, 500px/500px)
     private static final int DIAMETER = 30;
-    public static final int MOVE_TIME = 1000; //milliseconds
+    private static final int MOVE_TIME = 1000; //milliseconds, TIME FALLING BETWEEN POSITION
 
     //class atributes
     private BufferedImage icon;
     private int positionX;
-    private int positionY = SECTOR;
-    private Game game;
+    private int positionY = 0;
+    public Game game;
 
     public Items(Game game, String path, int positionX) {
         this.game = game;
@@ -32,18 +32,17 @@ public abstract class Items implements Runnable {
                 e.printStackTrace();
             }
         }
-
-        if (this.getBounds().intersects(game.getMr().getBounds() ) ) {
-            System.out.println("bro");
-            game.destroyItem(this);
-        }
-
-        else {
-            game.destroyItem(this);
+        game.destroyItem(this);
+        if ( getMr().getPositionX() == this.positionX ) {
+            this.effect();
         }
     }
 
     public abstract void effect();
+
+    public Mr getMr(){
+        return this.game.getMr();
+    }
 
     public Rectangle getBounds() {
         return new Rectangle(positionX, positionY, DIAMETER, DIAMETER);
