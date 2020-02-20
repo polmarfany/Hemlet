@@ -10,17 +10,16 @@ public class Mr {
     private static final int POSITIONY = 600;
     private static final int startingPositionX = 0;
     private static final int finalPositionX = 600;
-    private static final int movementAugment = 100;
-
+    private static final int MOVEMENTAUGMENT = 100;
+    private static int movementAugment = MOVEMENTAUGMENT;
 
     //game parameters
-    private int lifes = 3;
+    private int lifes = 3; //NOSE SI ES MILLOR POSARHO AQUI O AL MAIN, DE MOMENT ES QUEDARA AL MAIN
     private int positionX = startingPositionX; //actual position, with 0 being the initial position
     private static BufferedImage icon;
     private Game game;
-    private static final int MRDIAMETER = 30;
 
-    private int SWAPPER = 1;
+    private static int SWAPPER = 1;
 
     public Mr(Game game) {
         this.game = game;
@@ -33,17 +32,16 @@ public class Mr {
 
     public void keyReleased(KeyEvent e) {
         int futurePosition = 0;
-        if (e.getKeyCode() == KeyEvent.VK_LEFT)
+
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+            futurePosition = positionX + (movementAugment * SWAPPER);
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT)
             futurePosition = positionX + (movementAugment * -SWAPPER);
 
-        else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            futurePosition = positionX + (movementAugment * SWAPPER);
-
-        if (futurePosition >= 0 && futurePosition <= 500 )
+        if (futurePosition >= 0)
             positionX = futurePosition;
 
-        else if (futurePosition == finalPositionX) {
-            positionX = futurePosition;
+        if (futurePosition == finalPositionX) {
             //TODO posar d'alguna manera que aparegui, ni que sigui mig segon, en la casella de sortida, per a veure com entra
             mrHasArrivedEnd();
             mrStart();
@@ -52,11 +50,31 @@ public class Mr {
 
     //item effects
     public void wrenchEffect() {
-
+        new Thread("wrench"){
+            public void run(){
+            movementAugment = 0;
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            movementAugment = MOVEMENTAUGMENT;
+            }
+        }.start();
     }
 
     public void screwdriverEffect() {
-        SWAPPER = SWAPPER * -1; //amb aquest SWAPPER per a canviar de 1 a -1, aconseguim fer el efecte del screwdriver
+        new Thread("screwdriver"){
+            public void run(){
+                SWAPPER = -1; //amb aquest SWAPPER per a canviar de 1 a -1, aconseguim fer el efecte del screwdriver
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                SWAPPER = 1;
+            }
+        }.start();
     }
 
     //game functionalities
@@ -65,7 +83,7 @@ public class Mr {
     }
 
     public void mrHasArrivedEnd() {
-        game.augmentPoints();
+        game.incrementPoints();
     }
 
     public int getPositionX() {

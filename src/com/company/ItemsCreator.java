@@ -38,6 +38,11 @@ public class ItemsCreator implements Runnable {
 
     private static ItemsBad createBadItem(int X) {
         double dub = Math.random();
+        return dub < 0.5 ? new Plier(game, X) : createBadItemWithEffect(X);
+    }
+
+    private static ItemsBad createBadItemWithEffect(int X) {
+        double dub = Math.random();
         return dub < 1.0/3.0 ? new Hammer(game, X) : (dub > 2.0/3.0 ) ? new Wrench(game, X) : new Screwdriver(game, X); //cada item te un 33% de possibilitats per cada BADITEM
     }
 

@@ -9,6 +9,6 @@ public abstract class ItemsBad extends Items {
     }
 
     public void effect() {
-        game.lifes = game.lifes - this.lifeMinus;
+        game.setLifes(lifeMinus);
     }
 }

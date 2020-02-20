@@ -8,7 +8,7 @@ public abstract class Items implements Runnable {
     //game boundaries handling
     private static final int FLOOR_Y = 500; //floor, maximum reach of painting method
     private static final int SECTOR = 100; //travel movement (table 5x5, 500px/500px)
-    private static final int MOVE_TIME = 1000; //milliseconds, TIME FALLING BETWEEN POSITION
+    private static int MOVE_TIME = 1000; //milliseconds, TIME FALLING BETWEEN POSITION
 
     //class atributes
     private BufferedImage icon;
@@ -41,6 +41,10 @@ public abstract class Items implements Runnable {
 
     public Mr getMr(){
         return this.game.getMr();
+    }
+
+    public static void disminuirMoveTime() {
+        MOVE_TIME = MOVE_TIME - 50;
     }
 
     public void paint(Graphics2D g) {
